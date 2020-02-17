@@ -1,3 +1,0 @@
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/DFS_Code/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/DFS_Code/cmake-build-debug/CMakeFiles/DFS_Code.dir
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/DFS_Code/cmake-build-debug/CMakeFiles/edit_cache.dir
