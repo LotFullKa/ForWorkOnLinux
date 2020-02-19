@@ -23,6 +23,7 @@ private:
 
     int time = 1;
 
+    vector<vector<int>> Classters;
     vector<set <int>>  graph;              // под цифрой лежат цифры куда можной пойти
     vector<set <int>>  regraph;
     vector<int> colors;                     // 0 - белый   1 - серый    2 - черный
@@ -34,7 +35,10 @@ private:
     queue <int>  FinishStuck;
 
     void prepair(){
+        time = 0;
         colors.resize(colors.size(),0);
+        while (!FinishStuck.empty())
+            FinishStuck.pop();
     }
 
     void resize(int N){
@@ -57,6 +61,44 @@ public:
             resize(max(from, to) + 1);
         graph[from].insert(to);
         regraph[to].insert(from);
+    }
+
+    void classtorBuildeer(){
+        int istarer = 0;
+        int max = TimeOut[0];
+
+        for (int i = 0; i < TimeOut.size(); ++i) {
+            if(max < TimeOut[i]){
+                max = TimeOut[i];
+                istarer = i;
+            }
+        }
+
+        if(max == 0) return;
+
+        prepair();
+
+        reDFS(istarer);
+
+        Classters.resize(Classters.size() + 1);
+        while(!FinishStuck.empty()) {
+            int classteritem = FinishStuck.front();
+            Classters[Classters.size() - 1].push_back(classteritem);
+            FinishStuck.pop();
+            TimeOut[classteritem] = 0;
+        }
+
+        classtorBuildeer();
+    }
+
+    void classtorPrint(){
+        for(int i = 0; i < Classters.size(); ++i){
+            cout << " " << i <<" : { ";
+            for (int g : Classters[i]) {
+                cout << g << " ";
+            }
+            cout << "}" << endl;
+        }
     }
 
     void print(){
@@ -103,6 +145,20 @@ public:
         colors[s] = 2;
         FinishStuck.push(s);
     }
+
+    void reDFS(int s) {
+        if(recolors[s] != 0) return;
+        recolors[s] = 1;
+        reTimeIn[s] = time;
+        time ++;
+
+        for (auto i : regraph[s]) reDFS(i);
+
+        reTimeOut[s] = time;
+        time++;
+        recolors[s] = 2;
+        FinishStuck.push(s);
+    }
 };
 
 int main() {
@@ -111,11 +167,16 @@ int main() {
     int in, out;
 
     while(cin >> in >> out){
+        if (in == -1) break;
         Cities.add(in, out);
     }
 
     Cities.print();
 
     Cities.finishprint();
+
+    Cities.classtorBuildeer();
+
+    Cities.classtorPrint();
     return 0;
 }
