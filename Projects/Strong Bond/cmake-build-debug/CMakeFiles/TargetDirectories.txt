@@ -1,3 +1,0 @@
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Strong Bond/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Strong Bond/cmake-build-debug/CMakeFiles/Strong_Bond.dir
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Strong Bond/cmake-build-debug/CMakeFiles/edit_cache.dir
