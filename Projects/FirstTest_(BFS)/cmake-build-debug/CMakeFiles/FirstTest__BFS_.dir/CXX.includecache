@@ -6,13 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Stong Bond/main.cpp
+/home/kamil/Experements/ForWorkOnLinux/Projects/FirstTest_(BFS)/main.cpp
 iostream
 -
-vector
+queue
 -
 set
--
-queue
 -
 

@@ -1,0 +1,3 @@
+/home/kamil/Experements/ForWorkOnLinux/Projects/FirstTest_(BFS)/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kamil/Experements/ForWorkOnLinux/Projects/FirstTest_(BFS)/cmake-build-debug/CMakeFiles/FirstTest__BFS_.dir
+/home/kamil/Experements/ForWorkOnLinux/Projects/FirstTest_(BFS)/cmake-build-debug/CMakeFiles/edit_cache.dir

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Stong Bond/main.cpp" "/home/kamil/Experemenrs/ForWorkOnLinux/Projects/Stong Bond/cmake-build-debug/CMakeFiles/Stong_Bond.dir/main.cpp.o"
+  "/home/kamil/Experements/ForWorkOnLinux/Projects/Strong Bond/main.cpp" "/home/kamil/Experements/ForWorkOnLinux/Projects/Strong Bond/cmake-build-debug/CMakeFiles/Stong_Bond.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
