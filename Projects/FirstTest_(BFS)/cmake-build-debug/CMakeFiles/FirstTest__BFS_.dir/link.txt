@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/FirstTest__BFS_.dir/main.cpp.o  -o FirstTest__BFS_ 
