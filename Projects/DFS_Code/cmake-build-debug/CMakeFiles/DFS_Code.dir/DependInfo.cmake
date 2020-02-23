@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/kamil/Experemenrs/ForWorkOnLinux/Projects/DFS_Code/main.cpp" "/home/kamil/Experemenrs/ForWorkOnLinux/Projects/DFS_Code/cmake-build-debug/CMakeFiles/DFS_Code.dir/main.cpp.o"
+  "/home/kamil/Experements/ForWorkOnLinux/Projects/DFS_Code/main.cpp" "/home/kamil/Experements/ForWorkOnLinux/Projects/DFS_Code/cmake-build-debug/CMakeFiles/DFS_Code.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

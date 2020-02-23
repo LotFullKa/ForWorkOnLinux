@@ -119,5 +119,5 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/Strong_Bond.dir/DependInfo.cmake"
+  "CMakeFiles/Stong_Bond.dir/DependInfo.cmake"
   )
