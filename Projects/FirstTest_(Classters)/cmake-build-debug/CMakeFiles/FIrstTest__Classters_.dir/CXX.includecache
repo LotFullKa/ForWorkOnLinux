@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experements/ForWorkOnLinux/Projects/FIrstTest_(Classters)/main.cpp
+iostream
+-
+vector
+-
+set
+-
+queue
+-
+
