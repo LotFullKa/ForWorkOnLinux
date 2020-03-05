@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experements/ForWorkOnLinux/Projects/CLassWork 24.02.20/main.cpp
+iostream
+-
+vector
+-
+set
+-
+stack
+-
+
