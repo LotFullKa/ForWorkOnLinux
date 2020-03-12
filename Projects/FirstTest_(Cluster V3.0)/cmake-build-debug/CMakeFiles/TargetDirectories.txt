@@ -1,0 +1,3 @@
+/home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Cluster V3.0)/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Cluster V3.0)/cmake-build-debug/CMakeFiles/FirstTest__Cluster_V3_0_.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Cluster V3.0)/cmake-build-debug/CMakeFiles/edit_cache.dir
