@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/CLassWork_16_03_20.dir/main.cpp.o  -o CLassWork_16_03_20 
