@@ -12,17 +12,13 @@ public:
 
     friend istream& operator >> (istream &in, BigInteger &BI);
 
-    friend BigInteger operator +(const BigInteger &BI);
+    BigInteger operator +(const BigInteger &BI);
 
-    friend BigInteger operator -(BigInteger &BI);
+    BigInteger operator -(BigInteger &BI);
 
-    friend bool operator ==(BigInteger &left, BigInteger &right);
+    bool operator ==(BigInteger &left, BigInteger &right);
 
-    friend bool operator <(BigInteger &left, BigInteger &right);
-
-    friend BigInteger operator +(BigInteger &BI, int x);
-
-    friend BigInteger operator +(int x, BigInteger &BI);
+    bool operator <(BigInteger &left, BigInteger &right);
 
 private:
     int _sign = 1;
@@ -69,12 +65,12 @@ istream &operator>>(istream &in, BigInteger &BI) {
 }
 
 //унарный + (тупо плюсик перед числом а ля y = +x;)
-BigInteger operator+(const BigInteger &BI) {
+BigInteger BigInteger :: operator+(const BigInteger &BI) {
     return BI;
 }
 
 //унарный минус перед числом (y = -x )
-BigInteger operator-(BigInteger &BI) {
+BigInteger BigInteger :: operator-(BigInteger &BI) {
     BI._sign *= -1;
     return BI;
 }
@@ -82,7 +78,7 @@ BigInteger operator-(BigInteger &BI) {
 //                          Блок сравнений
 //сравнения равенства
 
-bool operator ==(BigInteger &left, BigInteger &right) {
+BigInteger bool :: operator ==(BigInteger &left, BigInteger &right) {
     //сравнение по знаку
     if (left._sign != right._sign) return false;
 
