@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp
+iostream
+-
+vector
+-
+string
+-
+fstream
+-
+
