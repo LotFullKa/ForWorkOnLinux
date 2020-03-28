@@ -57,27 +57,27 @@ include CMakeFiles/BigInteger_V2_0.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/BigInteger_V2_0.dir/flags.make
 
-CMakeFiles/BigInteger_V2_0.dir/main.cpp.o: CMakeFiles/BigInteger_V2_0.dir/flags.make
-CMakeFiles/BigInteger_V2_0.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/BigInteger_V2_0.dir/main.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigInteger_V2_0.dir/main.cpp.o -c /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp
+CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o: CMakeFiles/BigInteger_V2_0.dir/flags.make
+CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o: ../biginteger.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o -c /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp
 
-CMakeFiles/BigInteger_V2_0.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigInteger_V2_0.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp > CMakeFiles/BigInteger_V2_0.dir/main.cpp.i
+CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp > CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.i
 
-CMakeFiles/BigInteger_V2_0.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigInteger_V2_0.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp -o CMakeFiles/BigInteger_V2_0.dir/main.cpp.s
+CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp -o CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.s
 
 # Object files for target BigInteger_V2_0
 BigInteger_V2_0_OBJECTS = \
-"CMakeFiles/BigInteger_V2_0.dir/main.cpp.o"
+"CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o"
 
 # External object files for target BigInteger_V2_0
 BigInteger_V2_0_EXTERNAL_OBJECTS =
 
-BigInteger_V2_0: CMakeFiles/BigInteger_V2_0.dir/main.cpp.o
+BigInteger_V2_0: CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o
 BigInteger_V2_0: CMakeFiles/BigInteger_V2_0.dir/build.make
 BigInteger_V2_0: CMakeFiles/BigInteger_V2_0.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable BigInteger_V2_0"

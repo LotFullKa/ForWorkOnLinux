@@ -3,4 +3,4 @@ project(BigInteger_V2_0)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(BigInteger_V2_0 main.cpp)
+add_executable(BigInteger_V2_0  biginteger.cpp)

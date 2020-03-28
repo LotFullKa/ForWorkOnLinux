@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
 
 using namespace std;
 
@@ -26,6 +25,7 @@ public:
                 x /= BASE;
             }
         } else {
+            x = -x;
             _sign = false;
             while (x != 0) {
                 _digits.push_back(x % BASE);
@@ -105,12 +105,13 @@ public:
         long long int temp = 0;
         for (int i = 0; i < result.size(); ++i) {
             temp = result._digits[i] / BigInteger::BASE;
-            if (i + 1 >= result.size() and temp != 0)
-                result._digits.push_back(0);
-            result._digits[i + 1] += temp;
+            if (temp != 0) {
+                if (i + 1 >= result.size())
+                    result._digits.push_back(0);
+                result._digits[i + 1] += temp;
+            }
             result._digits[i] %= BigInteger::BASE;
         }
-
         return result;
     }
 
@@ -223,8 +224,9 @@ public:
 
     friend BigInteger operator %(const BigInteger &left, const BigInteger &right);
 
+private:
     // компоненты и функции личного пользования
-    static const int BASE = 1000; //10^3
+    static const int BASE = 10000; //10^5
     bool _sign = true;
     vector<int> _digits;
 
@@ -548,8 +550,8 @@ BigInteger operator %(const BigInteger &left, const BigInteger &right){
 // Rational
 class Rational{
 private:
-    static const int BASE = 1000;
-    int BASE_len = to_string(BASE).size() - 1;
+    static const int BASE = 1000000000;
+    static const int BASE_len = 9;
     BigInteger numerator;
     BigInteger denominator;
     bool _sign = true;
@@ -562,35 +564,44 @@ private:
     }
 
 public:
-    Rational() = default;
+    //default
+    Rational(){
+        numerator = 0;
+        denominator = 1;
+    };
 
-    Rational(int n){
-        if (n >= 0) {
+    //by int
+    Rational(int x){
+        if (x >= 0) {
             _sign = true;
-            numerator = n;
+            numerator = x;
         } else {
-            _sign = true;
-            numerator = -n;
+            _sign = false;
+            numerator = -x;
         }
         denominator = 1;
     }
 
+    //by BigInteger
     Rational(const BigInteger& BI){
         if (BI >= 0){
             _sign = true;
             numerator = BI;
         } else {
             _sign = false;
+            numerator = -BI;
         }
         denominator = 1;
     }
 
+    //copy
     Rational(const Rational& Ra){
         _sign = Ra._sign;
         numerator = Ra.numerator;
         denominator = Ra.denominator;
     }
 
+    //by string
     Rational(const string str){
         string num = "";
         string denom = "";
@@ -647,7 +658,7 @@ public:
         string temp;
         while (frac.size() <= precision) {
             temp = ((rem * BigInteger(BASE)) / denominator).toString();
-            for (int i = 0; i <  BASE_len - temp.size(); ++i) {
+            for (size_t i = 0; i < (BASE_len - temp.size()); ++i) {
                 frac += '0';
             }
             frac += temp;
@@ -673,8 +684,8 @@ public:
             result += '-';
 
         result += integer.toString() + ".";
-        for(size_t i = 0; i < precision; ++i)
-            result += frac[i];
+        for(size_t j = 0; j < precision; ++j)
+            result += frac[j];
 
         return result;
     }
@@ -765,6 +776,13 @@ public:
 
     friend Rational operator /(const Rational& left, const Rational& right);
 
+    friend Rational operator /(const Rational& left, const BigInteger& b);
+
+    friend Rational operator /(const BigInteger& a, const Rational& right);
+
+    friend Rational operator /(const int& a, const Rational& right);
+
+    friend Rational operator /(const Rational& left, const int& b);
 };
 
 ostream& operator <<(ostream& out, const Rational& right){
@@ -816,7 +834,7 @@ Rational operator +(const Rational &left, const Rational &right){
     return result += right;
 }
 
-Rational operator  -(const Rational &left, const Rational &right){
+Rational operator -(const Rational &left, const Rational &right){
     Rational result = left;
     return  result -= right;
 }
@@ -831,7 +849,10 @@ Rational operator *(const Rational &left, const Rational &right){
 
     result.numerator /= temp;
     result.denominator /= temp;
-    result._sign = !(left._sign xor right._sign);
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
 
     return result;
 }
@@ -844,29 +865,78 @@ Rational operator /(const Rational& left, const Rational& right){
 
     result.numerator /= temp;
     result.denominator /= temp;
-    result._sign = !(left._sign xor right._sign);
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
 
     return result;
 }
 
-int main() {
-    ofstream out;
-    out.open("/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/out_of_cpp.txt");
+Rational operator /(const Rational& left, const BigInteger& b){
+    Rational result;
+    Rational right = b;
+    result.numerator = left.numerator * right.denominator;
+    result.denominator = left.denominator * right.numerator;
+    BigInteger temp = Rational::greatest_common_factor(result.numerator, result.denominator);
 
-    Rational a , b;
+    result.numerator /= temp;
+    result.denominator /= temp;
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
 
-    cin >> a >> b;
+    return result;
+}
 
-    cout << "a + b" << a + b << endl;
-    cout << "a - b" << a - b << endl;
-    cout << "a * b" << a * b << endl;
-    cout << "a / b" << a / b << endl;
-    cout << "a < b" << (a < b) << endl;
-    cout << "a > b" << (a > b) << endl;
-    cout << "a == b" << (a == b) << endl;
-    cout << "a != b" << (a != b) << endl;
+Rational operator /(const BigInteger& a, const Rational& right){
+    Rational result;
+    Rational left = a;
+    result.numerator = left.numerator * right.denominator;
+    result.denominator = left.denominator * right.numerator;
+    BigInteger temp = Rational::greatest_common_factor(result.numerator, result.denominator);
 
-    cout << double(kun);
+    result.numerator /= temp;
+    result.denominator /= temp;
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
 
-    return 0;
+    return result;
+}
+
+Rational operator /(const Rational& left, const int& b){
+    Rational result;
+    Rational right = b;
+    result.numerator = left.numerator * right.denominator;
+    result.denominator = left.denominator * right.numerator;
+    BigInteger temp = Rational::greatest_common_factor(result.numerator, result.denominator);
+
+    result.numerator /= temp;
+    result.denominator /= temp;
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
+
+    return result;
+}
+
+Rational operator /(const int& a, const Rational& right){
+    Rational result;
+    Rational left = a;
+    result.numerator = left.numerator * right.denominator;
+    result.denominator = left.denominator * right.numerator;
+    BigInteger temp = Rational::greatest_common_factor(result.numerator, result.denominator);
+
+    result.numerator /= temp;
+    result.denominator /= temp;
+    if (result.numerator == 0)
+        result._sign = true;
+    else
+        result._sign = !(left._sign xor right._sign);
+
+    return result;
 }

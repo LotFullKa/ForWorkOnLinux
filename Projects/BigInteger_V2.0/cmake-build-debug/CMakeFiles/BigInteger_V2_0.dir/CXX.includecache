@@ -6,13 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp
+/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp
+biginteger.h
+/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.h
+fstream
+-
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.h
 iostream
 -
 vector
 -
 string
--
-fstream
 -
 
