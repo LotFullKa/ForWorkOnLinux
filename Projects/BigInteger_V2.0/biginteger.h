@@ -425,8 +425,11 @@ BigInteger operator -(const BigInteger &left, const BigInteger &right){
 
 //умножение
 BigInteger operator*(const BigInteger &left, const BigInteger &right) {
+    BigInteger result;
     BigInteger X = left;
+    X._sign = true;
     BigInteger Y = right;
+    Y._sign = true;
 
     //проверка на ноль !
     X.normalize();
@@ -435,31 +438,35 @@ BigInteger operator*(const BigInteger &left, const BigInteger &right) {
         return 0;
 
     int len = max(left.size(), right.size());
-    if(len <= 10)
-        return BigInteger::naiv_mul(X, Y);
+    if(len <= 6) {
+        result = BigInteger::naiv_mul(X, Y);
+        result._sign = !(left._sign xor right._sign);
+        return result;
+    }
 
-    BigInteger result;
-    result._sign = !(X._sign xor Y._sign);
-    int k = (len + 1)/2;
+    result._sign = !(left._sign xor right._sign);
+    int k = (len + 1) / 2;
 
     BigInteger Xl, Xr;
     if(X.size() < k){
-        Xl = X;
+        Xl._digits.resize(X.size());
+        copy(X._digits.begin(), X._digits.end(), Xl._digits.begin());
         Xr = 0;
     } else {
         Xl._digits.resize(k);
-        Xr._digits.resize(X.size() - k);
+        Xr._digits.resize(X._digits.end() - X._digits.begin() - k);
         copy(X._digits.begin(), X._digits.begin() + k, Xl._digits.begin());
-        copy(X._digits.begin() + k, X._digits. end(), Xr._digits.begin());
+        copy(X._digits.begin() + k, X._digits.end(), Xr._digits.begin());
     }
 
     BigInteger Yl, Yr;
     if(Y.size() < k){
-        Yl = Y;
+        Yl._digits.resize(Y.size());
+        copy(Y._digits.begin(), Y._digits.end(), Yl._digits.begin());
         Yr = 0;
     } else {
         Yl._digits.resize(k);
-        Yr._digits.resize(Y.size() - k);
+        Yr._digits.resize(Y._digits.end() - Y._digits.begin() - k);
         copy(Y._digits.begin(), Y._digits.begin() + k, Yl._digits.begin());
         copy(Y._digits.begin() + k, Y._digits.end(), Yr._digits.begin());
     }
@@ -469,19 +476,18 @@ BigInteger operator*(const BigInteger &left, const BigInteger &right) {
 
     BigInteger P1 = Xl * Yl;
     BigInteger P2 = Xr * Yr;
-    BigInteger P3 = Xlr * Ylr;
-    P3 -= P1 + P2;
+    BigInteger P3 = Xlr * Ylr - P1 - P2;
 
-    result._digits.resize(len * 2, 0);
-    for (int i = 0; i < len; ++i) {
+    result._digits.resize(4 * k, 0);
+    for (int i = 0; i < 2 * k; ++i) {
         result._digits[i] = P1.save_digit(i);
     }
 
-    for (int i = len; i < 2 * len; ++i){
-        result._digits[i] = P2.save_digit(i - len);
+    for (int i = 0; i < 2 * k; ++i){
+        result._digits[i + 2 * k] = P2.save_digit(i);
     }
 
-    for (int i = 0; i < len; ++i) {
+    for (int i = 0; i < 2 * k + 1; ++i) {
         result._digits[i + k] += P3.save_digit(i);
     }
 
@@ -499,7 +505,7 @@ BigInteger operator*(const BigInteger &left, const BigInteger &right) {
 //деление
 BigInteger operator /(const BigInteger &left, const BigInteger &right){
     if (left.isZero())
-        return  0;
+        return 0;
 
     BigInteger a = left;
     a._sign = true;
@@ -528,9 +534,9 @@ BigInteger operator /(const BigInteger &left, const BigInteger &right){
         }
 
         BigInteger main_result = second;
+        if (a != second * b)
+            --main_result;
         main_result._sign = !(left._sign xor right._sign);
-        if (main_result._sign and a != second * b)
-            return --main_result;
 
         return main_result;
     } else {
@@ -539,6 +545,7 @@ BigInteger operator /(const BigInteger &left, const BigInteger &right){
         return main_result;
     }
 }
+
 
 //остаток от деления
 BigInteger operator %(const BigInteger &left, const BigInteger &right){
@@ -643,10 +650,11 @@ public:
         if(!_sign)
             str_out += "-";
         str_out += numerator.toString();
-        if(denominator != 1 or denominator != 0){
+        if(denominator != 1){
             str_out += "/";
             str_out += denominator.toString();
         }
+
         return str_out;
     }
 

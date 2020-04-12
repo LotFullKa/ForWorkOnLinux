@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp" "/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/cmake-build-debug/CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o"
+  "/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp" "/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/cmake-build-debug/CMakeFiles/BigInteger_V2_0.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

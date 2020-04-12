@@ -5,26 +5,21 @@ int main() {
 
     ofstream out("/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/out_of_cpp.txt");
 
-    BigInteger a, b;
-
-    cin >> a >> b;
-
-    out << a << endl << b << endl;
-
-    cout << a*b;
-
-    out << a *b;
-   Rational s, t;
+    Rational s, q, t;
 
     s = 4*3*7*13*19*41*43*11;
-    t = s - 25; // t=402365939
-    ((s = 1000000007) *= 1000000009) *= 2147483647;
-    if ((s/t).asDecimal(10) != "5337140829307966068.3989202202")
-        std::cout <<4<< std::endl;
-    t = -t;
-    if ((t/s).asDecimal(25) != "-0.0000000000000000001873662")
-        std::cout << 5 << std::endl;
+    t = -17*13*23*79;
+    s *= s*s, t *= t*t;
+    q = s/t;
+    q *= t/s;
+    if (q != 1 )
+        cout << "error !";
+    if (q.toString() != "1")
+        cout << "error1";
 
+    BigInteger z ("-1214387438957564646453"), h ("432489385945");
+    cout << z/h <<endl;
+    cout << -11/5;
     return 0;
 }
 

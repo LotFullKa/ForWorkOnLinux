@@ -123,32 +123,32 @@ BigInteger_V2_0/fast:
 	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/build
 .PHONY : BigInteger_V2_0/fast
 
-biginteger.o: biginteger.cpp.o
+main.o: main.cpp.o
 
-.PHONY : biginteger.o
+.PHONY : main.o
 
 # target to build an object file
-biginteger.cpp.o:
-	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.o
-.PHONY : biginteger.cpp.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-biginteger.i: biginteger.cpp.i
+main.i: main.cpp.i
 
-.PHONY : biginteger.i
+.PHONY : main.i
 
 # target to preprocess a source file
-biginteger.cpp.i:
-	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.i
-.PHONY : biginteger.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-biginteger.s: biginteger.cpp.s
+main.s: main.cpp.s
 
-.PHONY : biginteger.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-biginteger.cpp.s:
-	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/biginteger.cpp.s
-.PHONY : biginteger.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/BigInteger_V2_0.dir/build.make CMakeFiles/BigInteger_V2_0.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... BigInteger_V2_0"
 	@echo "... edit_cache"
-	@echo "... biginteger.o"
-	@echo "... biginteger.i"
-	@echo "... biginteger.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 

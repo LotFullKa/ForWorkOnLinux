@@ -84,10 +84,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.cpp">
-			<Option target="BigInteger_V2_0"/>
-		</Unit>
-		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/biginteger.h">
+		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/main.cpp">
 			<Option target="BigInteger_V2_0"/>
 		</Unit>
 		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/BigInteger_V2.0/CMakeLists.txt">
