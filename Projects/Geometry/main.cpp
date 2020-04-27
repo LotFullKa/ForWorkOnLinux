@@ -5,15 +5,14 @@ using namespace geometry;
 using namespace std;
 
 int main() {
-    Point point1(0, 0);
-    Point point2(1, 1);
-    Point point3(-1, -1);
+    Point point1(3, 0);
+    Point point2(-3, 0);
+    Point point3(4, 0), point4(3,-2);
 
-    cout << (point1 == point2) << endl;
 
-    Line first_line(point1, point2);
-    Line second_line(point2, point3);
-
-    std::cout << (second_line == first_line);
+    Ellipse X(point1, point2, 10);
+    cout << X.center().x << ':' << X.center().y;
+    pair<Line, Line> ls= X.directrices();
+    cout << 1;
     return 0;
 }

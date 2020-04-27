@@ -226,6 +226,12 @@ Geometry_BINARY_DIR:STATIC=/home/kamil/Experiments/ForWorkOnLinux/Projects/Geome
 //Value Computed by CMake
 Geometry_SOURCE_DIR:STATIC=/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry
 
+//Value Computed by CMake
+Geometry_new_BINARY_DIR:STATIC=/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/cmake-build-debug
+
+//Value Computed by CMake
+Geometry_new_SOURCE_DIR:STATIC=/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry
+
 //Path to a program.
 ProcessorCount_cmd_nproc:FILEPATH=/usr/bin/nproc
 

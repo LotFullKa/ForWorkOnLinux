@@ -9,6 +9,14 @@
 /home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/geometry.h
 cmath
 -
+utility
+-
+vector
+-
+stdarg.h
+-
+array
+-
 
 /home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/main.cpp
 iostream
