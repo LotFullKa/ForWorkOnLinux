@@ -17,6 +17,8 @@ stdarg.h
 -
 array
 -
+math.h
+-
 
 /home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/main.cpp
 iostream

@@ -5,14 +5,14 @@ using namespace geometry;
 using namespace std;
 
 int main() {
-    Point point1(3, 0);
-    Point point2(-3, 0);
-    Point point3(4, 0), point4(3,-2);
+    //cout.precision(9);
+    //cout.setf(ios::fixed);
+    Point point1(0, 0);
+    Point point2(3, 0);
+    Point point3(0, 4), point4(5,-1);
 
+    Triangle sq(point1, point2, point3);
+    cout << sq.inscribedCircle().center() << endl;
 
-    Ellipse X(point1, point2, 10);
-    cout << X.center().x << ':' << X.center().y;
-    pair<Line, Line> ls= X.directrices();
-    cout << 1;
     return 0;
 }
