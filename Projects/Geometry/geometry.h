@@ -5,11 +5,8 @@
 #include <array>
 #include <math.h>
 
-namespace geometry {
+
     static double eps = 1e-9;
-    double fixed (double num){
-        return round(num);
-    }
 
     struct Point {
     public:
@@ -17,7 +14,7 @@ namespace geometry {
         Point(const double x = 0,const double y = 0) : x(x), y(y) {}
 
         bool operator==(const Point &other) const {
-            return !((fabs(x - other.x) < eps or fabs(y - other.y) < eps));
+            return ((fabs(x - other.x) < eps and fabs(y - other.y) < eps));
         }
 
         bool operator!=(const Point &other) const {
@@ -29,21 +26,15 @@ namespace geometry {
     };
 
     std::ostream& operator <<(std::ostream& out, const Point& P){
-        out << P.x << " : " << P.y;
-        return out;
-    }
+    out << P.x << " : " << P.y;
+    return out;
+}
 
     struct Vector {
         // хранит в себе угол поворота вектора в радианах [0, 2Pi)
-        double _x;
-        double _y;
-        double angle;
-
-        Vector() {
-            _x = 1;
-            _y = 0;
-            angle = 0;
-        };
+        double _x = 1;
+        double _y = 0;
+        double angle = 0;
 
         Vector (const Point &start, const  Point &finish) {
             _x = finish.x - start.x;
@@ -57,6 +48,10 @@ namespace geometry {
 
         Vector(const Point& finish) : _x(finish.x), _y(finish.y) {
             angle_update();
+        }
+
+        Vector(const double& angle) {
+            rotate(angle);
         }
 
         bool operator ==(Vector other_vec) const {
@@ -95,9 +90,12 @@ namespace geometry {
             double len = get_vector_len();
             _x = len * cos(angle + plus_angle);
             _y = len * sin(angle + plus_angle);
+            angle_update();
         }
 
     private:
+
+
         void angle_update() {
             angle = atan(_y/_x);
 
@@ -124,32 +122,26 @@ namespace geometry {
 
     class Line {
     public:
-        Line (const Point &start, const Point &finish) : point_on_line(start), second_on_line(finish) {
-            slope_factor = get_slope(start, finish);
-        }
+        Line (const Point &start, const Point &finish) : point_on_line(start), second_on_line(finish) {}
 
         Line (const double &angle, const double & shift_x) :
-                point_on_line(shift_x, 0),
-                slope_factor(tan(angle))
-                {
-                    second_on_line = (Vector(point_on_line) + Vector(1, slope_factor)).get_point();
+                point_on_line(shift_x, 0) {
+                    second_on_line = (Vector(point_on_line) + Vector(angle)).get_point();
                 }
 
         Line (const Point &start, const double &angle) :
-                point_on_line(start),
-                slope_factor(tan(angle)) {
-                    second_on_line = (Vector(start) + Vector(1, slope_factor)).get_point();
+                point_on_line(start) {
+                    second_on_line = (Vector(start) + Vector(angle)).get_point();
                 }
 
         Line (const Point &start,const Vector &vec) :
                 point_on_line(start),
-                slope_factor(tan(vec.angle)),
                 second_on_line((Vector(start) + vec).get_point())
                 {}
 
         bool operator ==(Line& other_line) const{
-            return (slope_factor == other_line.slope_factor and
-            get_slope(point_on_line, other_line.point_on_line) == slope_factor);
+            return (get_slope() == other_line.get_slope() and
+            get_slope(point_on_line, other_line.point_on_line) == get_slope());
         }
 
         bool operator !=(Line& other_line) const {
@@ -157,41 +149,73 @@ namespace geometry {
         }
 
         Point operator ^(Line other_line) {
-            double intersection_x =(get_free_member() - other_line.get_free_member())/(other_line.slope_factor - slope_factor);
-            Point result(intersection_x, intersection_x * slope_factor);
-            return  result;
+            if (is_verticale())
+                return point_on_line.x * other_line.get_slope();
+            else if (other_line.is_verticale()) {
+                return other_line.point_on_line.x * get_slope();
+            } else {
+                double intersection_x =
+                        (get_free_member() - other_line.get_free_member()) / (other_line.get_slope() - get_slope());
+                Point result(intersection_x, intersection_x * get_slope());
+                return result;
+            }
         }
 
         double get_slope() const {
-            return slope_factor;
+            return get_slope(point_on_line, second_on_line);
         }
 
         Line get_perpendicular(const Point& on_line) const {
-            Line result(on_line, atan(slope_factor) + M_PI/2);
-            return result;
+            if (is_verticale()) {
+                Line result(on_line, 0);
+                return result;
+            } else {
+                Line result(on_line, atan(get_slope()) + M_PI / 2);
+                return result;
+            }
         }
 
     protected:
         Point point_on_line;
         Point second_on_line;
-        double slope_factor;
+
+        bool is_verticale() const {
+            return isnan(get_slope());
+        }
+
 
         static double get_slope(const Point &start, const Point &finish) {
+            if (finish.x - start.x == 0)
+                return nan("line is verticale");
             return (finish.y - start.y) / (finish.x - start.x);
         }
 
         double get_free_member() const {
-            return point_on_line.y - slope_factor * point_on_line.x;
+            if (is_verticale())
+                return point_on_line.x;
+            return point_on_line.y - get_slope() * point_on_line.x;
         }
     };
 
-    class Figure {
+    class Shape {
     public:
-        //virtual double perimeter() = 0;
-        //virtual double area() = 0;
+        virtual double area() = 0;
+        virtual double perimeter() = 0;
+
+
+        virtual bool operator ==(const Shape& another) = 0;
+        /*
+        virtual bool isCongruentTo(const Shape& another) = 0;
+        virtual bool isSimilarTo(const Shape& another) = 0;
+        virtual bool containsPoint(Point point) = 0;
+
+        virtual void rotate(Point center, double angle) = 0;
+        virtual void reflex(Point center) = 0;
+        virtual void scale(Point center, double coefficient) = 0;
+         */
     };
 
-    class Polygon : Figure {
+    class Polygon : public Shape {
     public:
 
         Polygon (std::vector<Point> vertices) : vertices(std::move(vertices)) {}
@@ -236,7 +260,7 @@ namespace geometry {
             return flag == check_twist(second_p, third_p, vertices[0]);
         }
 
-        double perimeter() const {
+        double perimeter() override {
             double perimeter = 0;
             for (int i = 0; i < vertices.size() - 1; ++i) {
                 perimeter += Vector(vertices[i], vertices[i + 1]).get_vector_len();
@@ -245,13 +269,52 @@ namespace geometry {
             return perimeter;
         }
 
-        double area() {
+        double area() override {
             double Gauss_sum = vertices[vertices.size() - 1].x * vertices[0].y - vertices[0].x * vertices[vertices.size() - 1].y;
             for (int i = 0; i < vertices.size() - 1; ++i) {
                 Gauss_sum += vertices[i].x * vertices[i + 1].y;
                 Gauss_sum -= vertices[i + 1].x * vertices[i].y;
             }
             return fabs(Gauss_sum) * 0.5;
+        }
+
+        bool operator ==(const Shape& another) override {
+            Polygon an = dynamic_cast<const Polygon &> (another);
+
+            if (vertices.size() != an.vertices.size())
+                return false;
+
+            int start_ver;
+            bool flag = false;
+            for (int i = 0; i < vertices.size(); ++i) {
+                if (vertices[0] == an.vertices[i]){
+                    start_ver = i;
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (!flag)
+                return false;
+
+            for (int i = 0; i < vertices.size(); ++i) {
+                if (vertices[i] != an.vertices[(start_ver + i) % vertices.size()]){
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag)
+                return  true;
+
+            for (int i = 0; i < vertices.size(); ++i) {
+                if (vertices[i] != an.vertices[vertices.size() - (start_ver + i) % vertices.size()]){
+                    flag = false;
+                    break;
+                }
+            }
+
+            return flag;
         }
 
     protected:
@@ -268,7 +331,7 @@ namespace geometry {
 
     };
 
-    class Ellipse : Figure {
+    class Ellipse : public Shape {
     public:
 
         Ellipse(const Point& focus_a, const Point& focus_b, double twice_A) :
@@ -292,17 +355,48 @@ namespace geometry {
         }
 
         std::pair<Line, Line> directrices() {
-            double dir_slope_factor = 1 / Line(focus_a, focus_b).get_slope();
+            Line main_axis(focus_a, focus_b);
             Point on_f_directr = (Vector(focus_a,focus_b) * ((A * A) / (C * C * 2))).get_point();
             Point on_s_directr = (Vector(focus_a,focus_b) * ((A * A) / (C * C * -2))).get_point();
-            return std::make_pair(Line(on_f_directr, dir_slope_factor), Line(on_s_directr, dir_slope_factor));
+            return std::make_pair(main_axis.get_perpendicular(on_f_directr), main_axis.get_perpendicular(on_s_directr));
         }
+
+        double area() override {
+            return M_PI * A * get_B();
+        }
+
+        double perimeter() override {
+            double B = get_B();
+            return M_PI * (3 * (A + B) - sqrt((3 * A + B) * (A + 3 * B)));
+        }
+
+        bool operator ==(const Shape& another) override {
+            Ellipse an = dynamic_cast<const Ellipse&> (another);
+            return focus_a == an.focus_a and
+                   focus_b == an.focus_b and
+                   A == an.A;
+        }
+
+        bool containsPoint(Point point) const {
+            Point center = get_center();
+            double B = get_B();
+            return (pow((point.x - center.x) * B, 2) + pow((point.y - center.y) * A, 2)) < A*A*B*B;
+        }
+
 
     private:
         Point focus_a;
         Point focus_b;
         double A;
         double C;
+
+        double get_B() const {
+            return sqrt(A * A - C * C);
+        }
+
+        Point get_center() const {
+            return (focus_b + Vector(focus_b, focus_a) * 0.5).get_point();
+        }
     };
 
     class Circle : public Ellipse {
@@ -317,10 +411,18 @@ namespace geometry {
             return rad;
         }
 
+        friend std::ostream& operator <<(std::ostream& out, const Circle& circle);
+
     private:
         Point cent;
         double rad;
     };
+
+    std::ostream& operator <<(std::ostream& out, const Circle& circle){
+        out << " center : " << circle.cent << std::endl;
+        out << " radius : " << circle.radius() << std::endl;
+        return out;
+    }
 
     class Rectangle : public Polygon {
     public:
@@ -386,7 +488,9 @@ namespace geometry {
         }
 
         Circle inscribedCircle() {
-            Point center = (get_bisector(0) ^ get_bisector(1));
+            Line l1 = get_bisector(0);
+            Line l2 = get_bisector(1);
+            Point center = (l1 ^ l2);
             double r = 2 * area() / perimeter();
             Circle result(center, r);
             return result;
@@ -418,13 +522,13 @@ namespace geometry {
         }
 
     protected:
+
         Line get_bisector(const int& vex) {
             //возращает биссектрису из вершины vex (0 - 1 - 2)
-
-            Vector help_vec(vertices[vex], vertices[(vex + 1) % 3]);
-            help_vec.rotate(- Vector(vertices[vex], vertices[(vex + 2) % 3]).angle);
-            help_vec.rotate(- help_vec.angle);
-            Line bisector(vertices[0], help_vec);
+            Vector a(vertices[vex], vertices[(vex + 1) % 3]);
+            Vector b(vertices[vex], vertices[(vex + 2) % 3]);
+            Vector guide_vect = (a + b*(a.get_vector_len()/b.get_vector_len()));
+            Line bisector(vertices[vex], guide_vect);
             return bisector;
         }
 
@@ -443,5 +547,3 @@ namespace geometry {
             return result;
         }
     };
-
-}
