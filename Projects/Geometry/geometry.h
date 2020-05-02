@@ -17,11 +17,11 @@
 
         Point(const double x = 0,const double y = 0) : x(x), y(y) {}
 
-        bool operator==(const Point &other) const {
+        bool operator ==(const Point &other) const {
             return ((fabs(x - other.x) < eps and fabs(y - other.y) < eps));
         }
 
-        bool operator!=(const Point &other) const {
+        bool operator !=(const Point &other) const {
             return !(*this == other);
         }
 
@@ -146,8 +146,8 @@
     public:
         Line (const Point &start, const Point &finish) : point_on_line(start), second_on_line(finish) {}
 
-        Line (const double &angle, const double & shift_x) :
-                point_on_line(shift_x, 0) {
+        Line (const double &angle, const double & shift_y) :
+                point_on_line(0, shift_y) {
                     second_on_line = (Vector(point_on_line) + Vector(angle)).get_point();
                 }
 
@@ -163,7 +163,7 @@
 
         bool operator ==(Line& other_line) const{
             return isEqual(get_slope() , other_line.get_slope()) and
-                    isEqual(get_slope(point_on_line, other_line.point_on_line), get_slope());
+                   isEqual(get_slope(point_on_line, other_line.point_on_line), get_slope());
         }
 
         bool operator !=(Line& other_line) const {
@@ -235,6 +235,7 @@
 
 
         virtual bool operator ==(const Shape& another) = 0;
+        virtual bool operator !=(const Shape& another) = 0;
         virtual bool isCongruentTo(const Shape& another) = 0;
         virtual bool isSimilarTo(const Shape& another) = 0;
         virtual bool containsPoint(Point point) = 0;
@@ -244,6 +245,7 @@
         virtual void reflex(Line axis) = 0;
         virtual void scale(Point center, double coefficient) = 0;
 
+        virtual ~Shape() = default;
     };
 
     class Polygon : public Shape {
@@ -269,7 +271,7 @@
         }
 
         bool isConvex(){
-            if (vertices.size() < 4)
+            if (verticesCount() < 4)
                 return true;
 
             Point first_p = vertices[0];
@@ -278,7 +280,7 @@
             Point fourth_p;
             int flag = check_twist(first_p, second_p, third_p);
 
-            for (int i = 3; i < vertices.size(); ++i){
+            for (int i = 3; i < verticesCount(); ++i){
                 fourth_p = vertices[i];
                 first_p = second_p;
                 second_p = third_p;
@@ -293,16 +295,16 @@
 
         double perimeter() override {
             double perimeter = 0;
-            for (int i = 0; i < vertices.size() - 1; ++i) {
+            for (int i = 0; i < verticesCount() - 1; ++i) {
                 perimeter += Vector(vertices[i], vertices[i + 1]).get_vector_len();
             }
-            perimeter += Vector(vertices[0], vertices[vertices.size() - 1]).get_vector_len();
+            perimeter += Vector(vertices[0], vertices[verticesCount() - 1]).get_vector_len();
             return perimeter;
         }
 
         double area() override {
-            double Gauss_sum = vertices[vertices.size() - 1].x * vertices[0].y - vertices[0].x * vertices[vertices.size() - 1].y;
-            for (int i = 0; i < vertices.size() - 1; ++i) {
+            double Gauss_sum = vertices[verticesCount() - 1].x * vertices[0].y - vertices[0].x * vertices[verticesCount() - 1].y;
+            for (int i = 0; i < verticesCount() - 1; ++i) {
                 Gauss_sum += vertices[i].x * vertices[i + 1].y;
                 Gauss_sum -= vertices[i + 1].x * vertices[i].y;
             }
@@ -312,12 +314,12 @@
         bool operator ==(const Shape& another) override {
             Polygon an = dynamic_cast<const Polygon &> (another);
 
-            if (vertices.size() != an.vertices.size())
+            if (verticesCount() != an.verticesCount())
                 return false;
 
             int start_ver;
             bool flag = false;
-            for (int i = 0; i < vertices.size(); ++i) {
+            for (int i = 0; i < verticesCount(); ++i) {
                 if (vertices[0] == an.vertices[i]){
                     start_ver = i;
                     flag = true;
@@ -328,8 +330,8 @@
             if (!flag)
                 return false;
 
-            for (int i = 0; i < vertices.size(); ++i) {
-                if (vertices[i] != an.vertices[(start_ver + i) % vertices.size()]){
+            for (int i = 0; i < verticesCount(); ++i) {
+                if (vertices[i] != an.vertices[(start_ver + i) % verticesCount()]){
                     flag = false;
                     break;
                 }
@@ -338,14 +340,18 @@
             if (flag)
                 return  true;
 
-            for (int i = 0; i < vertices.size(); ++i) {
-                if (vertices[i] != an.vertices[vertices.size() - (start_ver + i) % vertices.size()]){
+            for (int i = 0; i < verticesCount(); ++i) {
+                if (vertices[i] != an.vertices[verticesCount() - (start_ver + i) % verticesCount()]){
                     flag = false;
                     break;
                 }
             }
 
             return flag;
+        }
+
+        bool operator !=(const Shape& another) override {
+            return !(*this == another);
         }
 
         bool isCongruentTo(const Shape& another) override {
@@ -372,7 +378,7 @@
 
             //ловим совпадающие углы, чтобы было с чего начать
             std::vector<int> points_for_veiw;
-            for (int i = 0; i < vertices.size(); ++i) {
+            for (int i = 0; i < verticesCount(); ++i) {
                 if (isEqual(angles[i], an_angles[0]))
                     points_for_veiw.push_back(i);
             }
@@ -442,13 +448,13 @@
     protected:
         std::vector<Point> vertices;
 
-        int check_twist(const Point& first, const Point& second, const Point& third) {
+        static int check_twist(const Point& first, const Point& second, const Point& third) {
             //если 1 поворот против часовой стрелки, если  -1 поворот по часовой стрелке
             double angle_one = Vector(first, second).angle;
             double angle_two = Vector(second, third).angle;
 
             double delta_angle = angle_two - angle_one;
-            return fabs(delta_angle) > M_PI xor delta_angle > 0 ? 1 : -1;
+            return ((fabs(delta_angle) > M_PI) xor (delta_angle > 0)) ? 1 : -1;
         }
 
     };
@@ -472,7 +478,7 @@
             return std::make_pair(focus_a, focus_b);
         }
 
-        double eccentricity() {
+        double eccentricity() const {
             return C / A;
         }
 
@@ -494,9 +500,13 @@
 
         bool operator ==(const Shape& another) override {
             Ellipse an = dynamic_cast<const Ellipse&> (another);
-            return focus_a == an.focus_a and
-                   focus_b == an.focus_b and
-                   isEqual(A , an.A);
+            return center() == an.center() &&
+            ((A == an.A && get_B() == an.get_B()) ||
+            (A == an.get_B() && get_B() == an.A));
+        }
+
+        bool operator !=(const Shape& another) override {
+            return !(*this == another);
         }
 
         bool isCongruentTo(const Shape& another) override {
@@ -510,9 +520,9 @@
         }
 
         bool containsPoint(Point point) override {
-            Point center = get_center();
+            Point cent = center();
             double B = get_B();
-            return (pow((point.x - center.x) * B, 2) + pow((point.y - center.y) * A, 2)) <= A*A*B*B;
+            return (pow((point.x - cent.x) * B, 2) + pow((point.y - cent.y) * A, 2)) <= A*A*B*B;
         }
 
         void rotate(Point center, double angle) override {
@@ -554,9 +564,6 @@
             return sqrt(A * A - C * C);
         }
 
-        Point get_center() const {
-            return (focus_b + Vector(focus_b, focus_a) * 0.5).get_point();
-        }
     };
 
     class Circle : public Ellipse {
@@ -590,7 +597,7 @@
             cent = (Vector(center, cent) * coefficient).get_point();
         }
 
-        friend std::ostream& operator <<(std::ostream& out, const Circle& circle);
+        //friend std::ostream& operator <<(std::ostream& out, const Circle& circle);
 
     private:
         Point cent;
