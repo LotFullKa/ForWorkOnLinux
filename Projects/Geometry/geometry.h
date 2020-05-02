@@ -29,10 +29,12 @@
         double y;
     };
 
+    /*
     std::ostream& operator <<(std::ostream& out, const Point& P){
     out << P.x << " : " << P.y;
     return out;
-}
+    }
+    */
 
     struct Vector {
         // хранит в себе угол поворота вектора в радианах [0, 2Pi)
@@ -599,11 +601,13 @@
         }
     };
 
+    /*
     std::ostream& operator <<(std::ostream& out, const Circle& circle){
         out << " center : " << circle.cent << std::endl;
         out << " radius : " << circle.radius() << std::endl;
         return out;
     }
+     */
 
     class Rectangle : public Polygon {
     public:
