@@ -4,14 +4,23 @@
 using namespace std;
 
 int main() {
-    Point point1(0, 0);
-    Point point2(4, 0);
-    Point point3(0, 3), point4(5,-1);
+    Point p1(0, 0);
+    Point p2(4, 0);
+    Point p3(5, 6),
+    p4(0, 4),
+    p5(1, -3),
+    p6(4, 1);
 
-    Polygon a(point1, point3, point2, point4);
-    Polygon b(point2, point4, point1, Point(0, 1));
-    cout << (a == b);
+    Polygon ak(p1, p2, p3, p4);
 
+    ak.scale(p1, 2);
+    cout << ak.getVertices()[1];
+
+    Circle cr(p3, 3);
+    cr.reflex(Point(0,0));
+
+
+    cout << cr;
 
     return 0;
 }
