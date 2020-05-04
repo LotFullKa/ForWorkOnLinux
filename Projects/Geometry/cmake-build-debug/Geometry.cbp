@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/geometry.h">
+			<Option target="Geometry"/>
+		</Unit>
 		<Unit filename="/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/main.cpp">
 			<Option target="Geometry"/>
 		</Unit>

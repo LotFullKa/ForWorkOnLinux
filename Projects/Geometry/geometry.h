@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include <utility>
 #include <vector>
 #include <stdarg.h>
@@ -6,10 +7,12 @@
 #include <math.h>
 
 
-    static double eps = 1e-9;
+    static double eps = 1e-6;
 
     bool isEqual(const double& a,const double& b){
-        return  fabs(a - b) < eps;
+        double delta = fabs(a - b);
+        bool flag = delta < eps;
+        return  flag;
     }
 
     struct Point {
@@ -92,11 +95,15 @@
         }
 
         void rotate(double plus_angle) {
-            //поворот по часовой на угол angle
+            //поворот против часовой на угол angle
             double len = get_vector_len();
             _x = len * cos(angle + plus_angle);
             _y = len * sin(angle + plus_angle);
             angle_update();
+        }
+
+        double scalar(Vector &other) const {
+            return (_x * other._x) + (_y * other._y);
         }
 
     private:
@@ -115,18 +122,22 @@
     struct Angle {
         // вспомогательная структура строящая угол от трех точек
         // угол от on_line1 - ver - on_line2
-        Angle(const Point& ver, const Point& on_line1, const Point& on_line2) {
-            double a1 = Vector(ver, on_line1).angle;
-            double a2 = Vector(ver, on_line2).angle;
-            angle = fmin(abs(a1 - a2), 2*M_PI - abs(a1 - a2));
+        Angle(const Point& ver, const Point& on_line1, const Point& on_line2) : a1(ver, on_line1), a2 (ver, on_line2) {
+            angle = fmin(abs(a1.angle - a2.angle), 2*M_PI - abs(a1.angle - a2.angle));
         }
 
-        double get_angle(){
+        double get_angle() const{
             //вернет градус в радианах
             return angle;
         }
 
+        double get_cos_angle(){
+            return a1.scalar(a2) / (a1.get_vector_len() * a2.get_vector_len());
+        }
+
     private:
+        Vector a1;
+        Vector a2;
         double angle;
     };
 
@@ -161,9 +172,12 @@
                 second_on_line((Vector(start) + vec).get_point())
                 {}
 
-        bool operator ==(Line& other_line) const{
-            return isEqual(get_slope() , other_line.get_slope()) and
-                   isEqual(get_slope(point_on_line, other_line.point_on_line), get_slope());
+        bool operator ==(Line other_line) const{
+            if (is_verticale() and other_line.is_verticale())
+                return isEqual(point_on_line.x, other_line.point_on_line.x);
+            else
+                return isEqual(get_slope() , other_line.get_slope()) and
+                       isEqual(get_slope(point_on_line, other_line.point_on_line), get_slope());
         }
 
         bool operator !=(Line& other_line) const {
@@ -171,14 +185,17 @@
         }
 
         Point operator ^(Line other_line) {
-            if (is_verticale())
-                return point_on_line.x * other_line.get_slope();
+            if (is_verticale()) {
+                Point result(point_on_line.x, point_on_line.x * other_line.get_slope() + other_line.get_free_member());
+                return result;
+            }
             else if (other_line.is_verticale()) {
-                return other_line.point_on_line.x * get_slope();
+                Point result(other_line.point_on_line.x,other_line.point_on_line.x * get_slope() + get_free_member());
+                return result;
             } else {
                 double intersection_x =
                         (get_free_member() - other_line.get_free_member()) / (other_line.get_slope() - get_slope());
-                Point result(intersection_x, intersection_x * get_slope());
+                Point result(intersection_x, intersection_x * get_slope() + get_free_member());
                 return result;
             }
         }
@@ -192,7 +209,9 @@
                 Line result(on_line, 0);
                 return result;
             } else {
-                Line result(on_line, atan(get_slope()) + M_PI / 2);
+                Vector help_vector(point_on_line, second_on_line);
+                help_vector.rotate(M_PI / 2);
+                Line result(on_line, help_vector);
                 return result;
             }
         }
@@ -210,6 +229,7 @@
         Point point_on_line;
         Point second_on_line;
 
+        //Линия вертикальна ?
         bool is_verticale() const {
             return isnan(get_slope());
         }
@@ -318,36 +338,35 @@
                 return false;
 
             int start_ver;
-            bool flag = false;
+            bool flag1 = false;
             for (int i = 0; i < verticesCount(); ++i) {
                 if (vertices[0] == an.vertices[i]){
                     start_ver = i;
-                    flag = true;
+                    flag1 = true;
                     break;
                 }
             }
 
-            if (!flag)
+            if (!flag1)
                 return false;
 
             for (int i = 0; i < verticesCount(); ++i) {
                 if (vertices[i] != an.vertices[(start_ver + i) % verticesCount()]){
-                    flag = false;
+                    flag1 = false;
                     break;
                 }
             }
 
-            if (flag)
-                return  true;
+            bool flag2 = true;
 
             for (int i = 0; i < verticesCount(); ++i) {
-                if (vertices[i] != an.vertices[verticesCount() - (start_ver + i) % verticesCount()]){
-                    flag = false;
+                if (vertices[i] != an.vertices[(verticesCount() + (start_ver - i)) % verticesCount()]){
+                    flag2 = false;
                     break;
                 }
             }
 
-            return flag;
+            return flag1 or flag2;
         }
 
         bool operator !=(const Shape& another) override {
@@ -372,8 +391,15 @@
             std::vector<double> angles;
             std::vector<double> an_angles;
             for (int i = 0; i < verticesCount(); ++i) {
-                angles.push_back(Angle(vertices[i], vertices[(verticesCount() + i - 1) % verticesCount()], vertices[(i + 1) % verticesCount()]).get_angle());
-                an_angles.push_back(Angle(an.vertices[i], an.vertices[(verticesCount() + i - 1) % verticesCount()], an.vertices[(i + 1) % verticesCount()]).get_angle());
+
+                /*
+                std::cerr << "pair of points:" << std::endl;
+                std::cerr << vertices[i].x << " : " << vertices[i].y << std::endl;
+                std::cerr << an.vertices[i].x << " : " << an.vertices[i].y << std::endl;
+                */
+
+                angles.push_back(Angle(vertices[i], vertices[(verticesCount() + i - 1) % verticesCount()], vertices[(i + 1) % verticesCount()]).get_cos_angle());
+                an_angles.push_back(Angle(an.vertices[i], an.vertices[(verticesCount() + i - 1) % verticesCount()], an.vertices[(i + 1) % verticesCount()]).get_cos_angle());
             }
 
             //ловим совпадающие углы, чтобы было с чего начать
@@ -396,7 +422,7 @@
 
                 //обход в другую сторону
                 for (int i = 0; i < verticesCount(); ++i) {
-                    if (isEqual(angles[(ver + i) % verticesCount()], an_angles[(verticesCount() - i) % verticesCount()])) {
+                    if (!isEqual(angles[(ver + i) % verticesCount()], an_angles[(verticesCount() - i) % verticesCount()])) {
                         flag2 =  false;
                         break;
                     }
@@ -418,6 +444,11 @@
         }
 
         void rotate(Point center, double angle) override {
+            /*
+            std::cerr << "I was called (rotate)" << std::endl;
+            std::cerr << center.x << " : " << center.y << std::endl;
+            std::cerr << "angle :  " << angle << std::endl;
+            */
             for (int i = 0; i < verticesCount(); ++i) {
                 Vector help_vector(center, vertices[i]);
                 help_vector.rotate(angle * M_PI / 180);
@@ -426,6 +457,10 @@
         }
 
         void reflex(Point center) override {
+            /*
+            std::cerr << "I was called (reflex Point)" << std::endl;
+            std::cerr << center.x << " : " << center.y << std::endl;
+            */
             Vector help_vetor(1, 1);
             for (int i = 0; i < verticesCount(); ++i) {
                 help_vetor = Vector(vertices[i], center);
@@ -434,12 +469,21 @@
         }
 
         void reflex(Line axis) override {
+            /*
+            std::cerr << "I was called (reflex Line)" << std::endl;
+            std::cerr << axis.get_slope() << std::endl;
+            */
             for (int i = 0; i < verticesCount(); ++i) {
                 vertices[i] = axis.get_reflex(vertices[i]);
             }
         }
 
         void scale(Point center, double coefficient) override {
+            /*
+            std::cerr << "I was called (scale)" << std::endl;
+            std::cerr << center.x << " : " << center.y << std::endl;
+            std::cerr << "coef : " << coefficient << std::endl;
+            */
             for (int i = 0; i < verticesCount(); ++i) {
                 vertices[i] = (Vector(center, vertices[i]) * coefficient).get_point();
             }
@@ -455,6 +499,10 @@
 
             double delta_angle = angle_two - angle_one;
             return ((fabs(delta_angle) > M_PI) xor (delta_angle > 0)) ? 1 : -1;
+        }
+
+        static bool isEqual_m (const double& a,const double& b) {
+            return fabs(a - b) < 1e-5;
         }
 
     };
@@ -516,7 +564,11 @@
 
         bool isSimilarTo(const Shape& another) override {
             Ellipse an = dynamic_cast<const Ellipse&> (another);
-            return isEqual(A/an.A, get_B()/an.get_B());
+            std::cerr << focus_a.x << " : " << focus_a.y << std::endl;
+            std::cerr << focus_b.x << " : " << focus_b.y << std::endl;
+            std::cerr << an.focus_a.x << " : " << an.focus_a.y << std::endl;
+            std::cerr << an.focus_a.x << " : " << an.focus_a.y << std::endl;
+            return isEqual(A/an.A, get_B()/an.get_B()) or isEqual( get_B()/ an.A, A/an.get_B());
         }
 
         bool containsPoint(Point point) override {
@@ -551,6 +603,8 @@
         void scale(Point center, double coefficient) override {
             focus_a = (Vector(center, focus_a) * coefficient).get_point();
             focus_b = (Vector(center, focus_b) * coefficient).get_point();
+            A *= coefficient;
+            C *= coefficient;
         }
 
 
@@ -666,11 +720,14 @@
     };
 
     class Triangle : public Polygon {
+
     public:
         Triangle(const Point& point1, const Point& point2, const Point& point3) : Polygon(point1, point2, point3) {}
 
         Circle circumscribedCircle() {
-           Point center = get_mid_perpendicular(0) ^ get_mid_perpendicular(1);
+            Line l1 = get_mid_perpendicular(0);
+            Line l2 = get_mid_perpendicular(1);
+           Point center = l1 ^ l2;
            double a = Vector(vertices[0], vertices[1]).get_vector_len();
            double b = Vector(vertices[1], vertices[2]).get_vector_len();
            double c = Vector(vertices[2], vertices[0]).get_vector_len();
@@ -706,10 +763,11 @@
         }
 
         Circle ninePointsCircle() {
-            Point center = ((Vector(orthocenter(), circumscribedCircle().center()) * 0.5)+ Vector(orthocenter())).get_point();
-            Point middle = ((Vector(vertices[0], vertices[1]) * 0.5) + Vector(vertices[0])).get_point();
-            double r = (Vector(center, middle)).get_vector_len();
-            Circle result(center, r);
+            Point a = (vertices[0] + Vector(vertices[0],vertices[1]) * 0.5).get_point(),
+                  b = (vertices[1] + Vector(vertices[1],vertices[2]) * 0.5).get_point(),
+                  c = (vertices[2] + Vector(vertices[2],vertices[0]) * 0.5).get_point();
+            Triangle help_triangle(a, b, c);
+            Circle result = help_triangle.circumscribedCircle();
             return result;
         }
 
@@ -726,7 +784,8 @@
 
         Line get_mid_perpendicular(const int& vex) {
             //возращает линию середнного перпендикуляра проходящего через прямую напротив вершины vex (0 - 1 - 2)
-            Point middle = ((Vector(vertices[(vex + 1) % 3], vertices[(vex + 2) % 3]) * 0.5) + Vector(vertices[(vex + 1) % 3])).get_point();
+            Vector help_vec = Vector(vertices[(vex + 1) % 3], vertices[(vex + 2) % 3]) * 0.5;
+            Point middle = (vertices[(vex + 1) % 3] + help_vec).get_point();
             Line result(vertices[(vex + 1) % 3], vertices[(vex + 2) % 3]);
             result = result.get_perpendicular(middle);
             return result;

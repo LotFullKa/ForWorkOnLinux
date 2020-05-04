@@ -9,6 +9,8 @@
 /home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/geometry.h
 cmath
 -
+iostream
+-
 utility
 -
 vector

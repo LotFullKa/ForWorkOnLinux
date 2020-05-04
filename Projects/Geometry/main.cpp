@@ -6,22 +6,20 @@ using namespace std;
 
 int main() {
 
-    Point a(-2, 2), b(1, 2), f(6, 1), c(3, -1), e(1, -1), d(-1, -2), k(3, 1);
-
-    Line ab(a, b);
-    Line ba(b, a);
-    cout << (ab == ba) << endl;
-
-    Polygon abfe(a, b, f, e);
-    Polygon bfea(a, b, f, e);
-
-    cout << (abfe == bfea) << endl;
-
-    Circle fc(f, 4);
-    Circle cf (f, 4);
-
-    cout << (fc == cf) << endl;
+    Point a(-3, 0), b(3, 0), c(0,3 * sqrt(3) );
+    Triangle abc(a , b, c);
+    cout << abc.ninePointsCircle().center().x << endl;
+    cout << abc.ninePointsCircle().center().y << endl;
+    cout << abc.ninePointsCircle().radius() << endl << endl;
 
 
-    return 0;
+    cout << abc.orthocenter().x << endl;
+    cout << abc.orthocenter().y << endl;
+
+    cout << abc.circumscribedCircle().center().x << endl;
+    cout << abc.circumscribedCircle().center().y << endl;
+
+    cout << abc.inscribedCircle().center().x << endl;
+    cout << abc.inscribedCircle().center().y << endl;
+
 }
