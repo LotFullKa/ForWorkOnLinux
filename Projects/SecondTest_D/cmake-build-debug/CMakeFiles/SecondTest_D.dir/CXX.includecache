@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/SecondTest_D/main_v2.0.cpp
+iostream
+-
+vector
+-
+bitset
+-
+

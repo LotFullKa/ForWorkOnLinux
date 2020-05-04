@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Cluster V4.0)/main.cpp
+iostream
+-
+vector
+-
+set
+-
+queue
+-
+assert.h
+-
+

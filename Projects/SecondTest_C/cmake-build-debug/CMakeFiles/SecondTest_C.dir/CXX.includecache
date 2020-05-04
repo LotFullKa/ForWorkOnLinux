@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/SecondTest_C/main.cpp
+iostream
+-
+vector
+-
+cmath
+-
+

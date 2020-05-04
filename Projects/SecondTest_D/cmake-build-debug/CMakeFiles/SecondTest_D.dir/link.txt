@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/SecondTest_D.dir/main_v2.0.cpp.o  -o SecondTest_D 

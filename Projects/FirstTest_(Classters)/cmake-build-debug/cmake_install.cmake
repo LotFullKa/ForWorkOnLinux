@@ -1,4 +1,4 @@
-# Install script for directory: /home/kamil/Experements/ForWorkOnLinux/Projects/FIrstTest_(Classters)
+# Install script for directory: /home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Classters)
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/kamil/Experements/ForWorkOnLinux/Projects/FIrstTest_(Classters)/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/kamil/Experiments/ForWorkOnLinux/Projects/FirstTest_(Classters)/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
