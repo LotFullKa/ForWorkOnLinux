@@ -1,0 +1,3 @@
+/home/kamil/Experiments/ForWorkOnLinux/Projects/ThirdTest_C/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/ThirdTest_C/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/ThirdTest_C/cmake-build-debug/CMakeFiles/ThirdTest_C.dir
