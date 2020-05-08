@@ -40,45 +40,45 @@ private:
     int w;
 };
 
-static bool compare(const Edge &a, const Edge &b) {
-    return a.w > b.w;
-}
-
-vector<int> parent;
-vector<Edge> edges;
-
-int Kruskal_al(){
-    for (int i = 0; i < parent.size(); ++i) {
-        parent[i] = i;
-    }
-    priority_queue<Edge, vector<Edge>, function<bool(Edge, Edge)> > q(compare, edges);
-    int weight_sum = 0;
-
-    while (!q.empty()) {
-        Edge edge = q.top();
-        q.pop();
-
-       if (find_set(edge.b) != find_set(edge.e)){
-           weight_sum += edge.w;
-           union_sets(edge.b,edge.e);
-       }
+    static bool compare(const Edge &a, const Edge &b) {
+        return a.w > b.w;
     }
 
-    return weight_sum;
-}
+    vector<int> parent;
+    vector<Edge> edges;
 
-int find_set (int v) {
-    if (v == parent[v])
-        return v;
-    return parent[v] = find_set (parent[v]);
-}
+    int Kruskal_al(){
+        for (int i = 0; i < parent.size(); ++i) {
+            parent[i] = i;
+        }
+        priority_queue<Edge, vector<Edge>, function<bool(Edge, Edge)> > q(compare, edges);
+        int weight_sum = 0;
 
-void union_sets (int a, int b) {
-    a = find_set (a);
-    b = find_set (b);
-    if (a != b)
-        parent[b] = a;
-}
+        while (!q.empty()) {
+            Edge edge = q.top();
+            q.pop();
+
+           if (find_set(edge.b) != find_set(edge.e)){
+               weight_sum += edge.w;
+               union_sets(edge.b,edge.e);
+           }
+        }
+
+        return weight_sum;
+    }
+
+    int find_set (int v) {
+        if (v == parent[v])
+            return v;
+        return parent[v] = find_set (parent[v]);
+    }
+
+    void union_sets (int a, int b) {
+        a = find_set (a);
+        b = find_set (b);
+        if (a != b)
+            parent[b] = a;
+    }
 
 };
 
