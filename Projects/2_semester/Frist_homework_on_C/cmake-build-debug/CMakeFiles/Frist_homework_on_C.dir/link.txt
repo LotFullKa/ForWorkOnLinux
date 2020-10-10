@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/Frist_homework_on_C.dir/help.c.o  -o Frist_homework_on_C 

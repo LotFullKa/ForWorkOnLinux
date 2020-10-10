@@ -1,0 +1,3 @@
+/home/kamil/Experiments/ForWorkOnLinux/Projects/4_TEST_D/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/4_TEST_D/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kamil/Experiments/ForWorkOnLinux/Projects/4_TEST_D/cmake-build-debug/CMakeFiles/4_TEST_D.dir

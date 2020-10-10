@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/ThirdTest_F.dir/main.cpp.o  -o ThirdTest_F 

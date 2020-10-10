@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/geometry.h
+cmath
+-
+iostream
+-
+utility
+-
+vector
+-
+stdarg.h
+-
+array
+-
+math.h
+-
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/main.cpp
+iostream
+-
+geometry.h
+/home/kamil/Experiments/ForWorkOnLinux/Projects/Geometry/geometry.h
+

@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Stong_Bond.dir/main.cpp.o  -o Stong_Bond 

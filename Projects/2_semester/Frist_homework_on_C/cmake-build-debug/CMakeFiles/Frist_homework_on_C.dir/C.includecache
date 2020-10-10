@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kamil/Experiments/ForWorkOnLinux/Projects/Frist_homework_on_C/help.c
+stdio.h
+-
+stdint.h
+/home/kamil/Experiments/ForWorkOnLinux/Projects/Frist_homework_on_C/stdint.h
+

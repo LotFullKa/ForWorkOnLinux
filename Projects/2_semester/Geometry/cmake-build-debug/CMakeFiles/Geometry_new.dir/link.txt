@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Geometry_new.dir/main.cpp.o  -o Geometry_new 
